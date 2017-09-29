@@ -85,7 +85,7 @@ public class DataReduceController {
         return selectDecoded;
     }
 
-    private String createHTTPCall(String query) {
+    private String createHTTPCall() {
 
         return
                 new StringBuilder()
@@ -98,20 +98,20 @@ public class DataReduceController {
     private ResponseEntity<SensorDataContainer> makeCall(String query) {
 
         String decodedQuery = decodeQuery(query);
-        String queryRestCall = createHTTPCall(decodedQuery);
+        String queryRestCall = createHTTPCall();
 
         log.info("Raw query = " + query);
         log.info("Decoded select query = " + decodedQuery);
         log.info("Query rest call = " + queryRestCall);
 
-        HttpEntity<String> request = new HttpEntity<>(query);
+        HttpEntity<String> request = new HttpEntity<>(decodedQuery);
         ResponseEntity<String> response =
                 restTemplate.exchange(queryRestCall, HttpMethod.POST, request, String.class);
 
         if (!response.getStatusCode().equals(HttpStatus.OK)) {
             // nok
             log.error(String.format("Rest call end with HttpStatus = %d", response.getStatusCode()));
-            return new ResponseEntity("", response.getStatusCode());
+            return new ResponseEntity("error", response.getStatusCode());
         }
 
         ObjectMapper m = new ObjectMapper();
