@@ -60,3 +60,14 @@ query endpoint to be possible to consume and render them.
 * windows size
 * microservices runtime port
 * data endpoint url from where the data are consumed
+
+
+## How to run microservice
+
+TODO
+
+## Examples
+
+```
+curl -XPOST http://127.0.0.1:7777/ts/v1/query --data "SELECT * from SensorData WHERE deviceId = 'foo' AND time > 1506253923 AND time < 1506426723"
+```

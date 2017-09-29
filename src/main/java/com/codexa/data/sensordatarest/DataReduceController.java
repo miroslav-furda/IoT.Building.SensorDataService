@@ -1,6 +1,6 @@
 package com.codexa.data.sensordatarest;
 
-import com.codexa.data.sensordatarest.api.DataReducerService;
+import com.codexa.data.sensordatarest.api.DataReduceService;
 import com.codexa.data.sensordatarest.obj.SensorDataContainer;
 import com.codexa.data.sensordatarest.obj.SensorEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -28,7 +30,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class DataReduceController {
 
     @Autowired
-    private DataReducerService dataReducerService;
+    private DataReduceService dataReduceService;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -38,48 +40,15 @@ public class DataReduceController {
 
 
     @RequestMapping(value = "/ts/v1/query", method = POST)
-    public @ResponseBody SensorDataContainer filterQueryCall(@RequestBody String selectQuery) {
+    public @ResponseBody ResponseEntity<SensorDataContainer> reduceDataFromQuery(@RequestBody String selectQuery) {
 
+        ResponseEntity<SensorDataContainer> sensorData = makeCall(selectQuery);
 
-        String decodedQuery = decodeQuery(selectQuery);
-        String queryRestCall = createHTTPCall(decodedQuery);
+        SensorDataContainer responseBody = sensorData.getBody();
+        List<SensorEntity> reducedSensorData = dataReduceService.reduce(responseBody.getRows());
+        responseBody.setRows(reducedSensorData);
 
-        log.info("raw select query = " + selectQuery);
-        log.info("decoded select query = " + decodedQuery);
-        log.info("query rest call = " + queryRestCall);
-
-
-        HttpEntity<String> request = new HttpEntity<>(decodedQuery);
-        ResponseEntity<String> t = restTemplate.exchange(queryRestCall, HttpMethod.POST, request, String.class);
-
-        ObjectMapper m = new ObjectMapper();
-        SensorDataContainer xx = null;
-        try {
-            xx = m.readValue(t.getBody(), SensorDataContainer.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("xx = " + xx);
-
-
-        // tt = {
-        //      "columns":["deviceId","type","value","time"],
-        //      "rows":[["foo","sit","amet",1506340047],["foo","bar","Lorem",1506340107]]}
-
-        log.info("t = " + t.getStatusCode());
-
-
-
-        log.info("t.getBody = " + t.getBody());
-        log.info("size =" + xx.getRows().size());
-
-
-        List<SensorEntity> res = dataReducerService.reduce(xx.getRows());
-        log.info("reduce = " + res.size());
-        xx.setRows(res);
-
-        return xx;
+        return sensorData;
     }
 
 
@@ -105,5 +74,35 @@ public class DataReduceController {
                 .append(dataEndpoint)
                 .append("/ts/v1/query")
                 .toString();
+    }
+
+
+    private ResponseEntity<SensorDataContainer> makeCall(String query) {
+
+        String decodedQuery = decodeQuery(query);
+        String queryRestCall = createHTTPCall(decodedQuery);
+
+        log.info("Raw query = " + query);
+        log.info("Decoded select query = " + decodedQuery);
+        log.info("Query rest call = " + queryRestCall);
+
+        HttpEntity<String> request = new HttpEntity<>(query);
+        ResponseEntity<String> response =
+                restTemplate.exchange(queryRestCall, HttpMethod.POST, request, String.class);
+
+        if (!response.getStatusCode().equals(HttpStatus.OK)) {
+            // nok
+            log.error(String.format("Rest call end with HttpStatus = %d", response.getStatusCode()));
+            return new ResponseEntity("", response.getStatusCode());
+        }
+
+        ObjectMapper m = new ObjectMapper();
+        SensorDataContainer result = null;
+        try {
+            result = m.readValue(response.getBody(), SensorDataContainer.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(result, response.getStatusCode());
     }
 }

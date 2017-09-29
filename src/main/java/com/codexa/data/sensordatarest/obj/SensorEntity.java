@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by peterszatmary on 27/09/2017.
+ * Model object for sensor data.
  */
 @Data
 @AllArgsConstructor

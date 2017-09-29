@@ -1,6 +1,6 @@
 package com.codexa.data.sensordatarest;
 
-import com.codexa.data.sensordatarest.api.DataReducerService;
+import com.codexa.data.sensordatarest.api.DataReduceService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -12,8 +12,8 @@ import org.springframework.web.client.RestTemplate;
 public class Beans {
 
     @Bean
-    public DataReducerService dataReducerService() {
-        return new DataReducerServiceImpl();
+    public DataReduceService dataReducerService() {
+        return new DataReduceServiceImpl();
     }
 
     @Bean
