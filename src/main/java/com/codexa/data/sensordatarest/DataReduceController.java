@@ -52,6 +52,24 @@ public class DataReduceController {
     }
 
 
+    public ResponseEntity delete() {
+        throw new UnsupportedOperationException(); //TODO
+    }
+
+
+    public ResponseEntity get() {
+        throw new UnsupportedOperationException(); //TODO
+    }
+
+    public ResponseEntity listKeys() {
+        throw new UnsupportedOperationException(); //TODO
+    }
+
+    public ResponseEntity put() {
+        throw new  UnsupportedOperationException(); //TODO
+    }
+
+
     /**
      * special character should be decoded back. For example %27 back to ' or + to space.
      * @param query
