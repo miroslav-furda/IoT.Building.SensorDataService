@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -76,11 +75,12 @@ public class DataReduceController {
      * @return
      */
     private String decodeQuery(String query) {
+
         String selectDecoded = null;
         try {
             selectDecoded = URLDecoder.decode(query, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return selectDecoded;
     }
@@ -119,7 +119,7 @@ public class DataReduceController {
         try {
             result = m.readValue(response.getBody(), SensorDataContainer.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return new ResponseEntity<>(result, response.getStatusCode());
     }
