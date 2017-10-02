@@ -1,12 +1,12 @@
 package com.codexa.data.sensordatarest;
 
 import com.codexa.data.sensordatarest.api.DataReduceService;
+import com.codexa.data.sensordatarest.api.RestCall;
 import com.codexa.data.sensordatarest.obj.SensorDataContainer;
 import com.codexa.data.sensordatarest.obj.SensorEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,11 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -34,12 +37,14 @@ public class DataReduceController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${data.endpoint}")
-    private String dataEndpoint;
+    @Autowired
+    private RestCall restCallUtil;
+
+
 
 
     @RequestMapping(value = "/ts/v1/query", method = POST)
-    public @ResponseBody ResponseEntity<SensorDataContainer> reduceDataFromQuery(@RequestBody String selectQuery) {
+    public @ResponseBody ResponseEntity<SensorDataContainer> reduceQueryCall(@RequestBody String selectQuery) {
 
         ResponseEntity<SensorDataContainer> sensorData = makeCall(selectQuery);
 
@@ -51,8 +56,31 @@ public class DataReduceController {
     }
 
 
-    public ResponseEntity delete() {
-        throw new UnsupportedOperationException(); //TODO
+    @RequestMapping(
+            value = "/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time}",
+            method = DELETE)
+    public @ResponseBody ResponseEntity<String> delete(
+            @PathVariable String table,
+            @PathVariable String deviceId,
+            @PathVariable String type,
+            @PathVariable String time) {
+
+        ResponseEntity<String> result;
+        Map<String, Object> map = new HashMap<>();
+        map.put("deviceId", deviceId);
+        map.put("type", type);
+        map.put("time", time);
+
+        String deleteCall = restCallUtil.delete();
+
+        try {
+            restTemplate.delete(deleteCall, map); //rest client exc,
+            result = new ResponseEntity<>("{\"success\":true}", HttpStatus.OK);
+        } catch (RuntimeException ex) {
+            result = new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_MODIFIED);
+        }
+        return result;
+
     }
 
 
@@ -61,7 +89,7 @@ public class DataReduceController {
     }
 
     public ResponseEntity listKeys() {
-        throw new UnsupportedOperationException(); //TODO
+        throw new UnsupportedOperationException();
     }
 
     public ResponseEntity put() {
@@ -85,24 +113,17 @@ public class DataReduceController {
         return selectDecoded;
     }
 
-    private String createHTTPCall() {
 
-        return
-                new StringBuilder()
-                .append(dataEndpoint)
-                .append("/ts/v1/query")
-                .toString();
-    }
 
 
     private ResponseEntity<SensorDataContainer> makeCall(String query) {
 
         String decodedQuery = decodeQuery(query);
-        String queryRestCall = createHTTPCall();
+        String queryRestCall = restCallUtil.query();
 
         log.info("Raw query = " + query);
         log.info("Decoded select query = " + decodedQuery);
-        log.info("Query rest call = " + queryRestCall);
+        log.info("RestCallImpl rest call = " + queryRestCall);
 
         HttpEntity<String> request = new HttpEntity<>(decodedQuery);
         ResponseEntity<String> response =

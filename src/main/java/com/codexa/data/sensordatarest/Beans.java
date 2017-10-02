@@ -1,6 +1,8 @@
 package com.codexa.data.sensordatarest;
 
 import com.codexa.data.sensordatarest.api.DataReduceService;
+import com.codexa.data.sensordatarest.api.RestCall;
+import com.codexa.data.sensordatarest.util.RestCallImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -19,5 +21,10 @@ public class Beans {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public RestCall queryUtil() {
+        return new RestCallImpl();
     }
 }

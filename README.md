@@ -1,15 +1,24 @@
 # Darwin sensor data rest microservice #
 
-Sometimes the other microservices and clients need to read less data than present in query.
-This microservice read senzor data by other data microservice see sensor-data-rest and reduce the
-query endpoint to be possible to consume and render them.
+Features
+
+- delegating rest calls to RIAK TS REST API on 8098 default port
+- for query data reducing algorithm is used on top of RIAK TS REST API call
 
 
 ## Technologies
 
 * Spring Boot
-* Consuming existing microservice senzor-data-rest.
-* Consumed endpoint http://[addr]:8098/ts/v1/query –data “»Query«” POST ( query )
+* Docker compose
+* RIAK TS
+
+
+## Consumed endpoints
+
+* http://[addr]:8098/ts/v1/query –data “»Query«” POST ( query )
+* http://[addr]:8098/ts/v1/tables/{table}/keys/deviceId/{deviceId}/time/{time}/type/{type} DELETE ( delete )
+*
+*
 
 
 ## Reducing algorithm
@@ -66,8 +75,54 @@ query endpoint to be possible to consume and render them.
 
 TODO
 
-## Examples
+## Query 1 or more data
 
 ```
 curl -XPOST http://127.0.0.1:7777/ts/v1/query --data "SELECT * from SensorData WHERE deviceId = 'foo' AND time > 1506253923 AND time < 1506426723"
 ```
+
+Response
+
+```json
+{
+  "columns": [
+    "deviceId",
+    "type",
+    "value",
+    "time"
+  ],
+  "rows": [
+    {
+      "deviceId": "222",
+      "type": "humidity",
+      "time": 1506676358,
+      "value": "12.2"
+    },
+    {
+      "deviceId": "222",
+      "type": "humidity",
+      "time": 1506676999,
+      "value": "12.3"
+    },
+    {
+      "deviceId": "111",
+      "type": "temperature",
+      "time": 1506677045,
+      "value": "24.3"
+    }
+  ]
+}
+```
+
+## Delete one row
+
+```
+curl -XDELETE "http://localhost:7777/ts/v1/tables/SensorData/keys/deviceId/foo/type/sit/time/1506340047"
+```
+
+Response
+
+{"success":true}
+
+
+TODO
