@@ -178,7 +178,8 @@ http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/Aliquam/type/sit/ti
 
 ## Put one or more data
 
-TODO img
+![put example in postman](https://bitbucket.org/iotresearchlab/darwin-sensor-data-rest/src/1b0df98df745a9a30ff36078dfde9862da9a998c/bin/put-example-in-postman.png?at=master&fileviewer=file-view-default)
+
 
 
 
