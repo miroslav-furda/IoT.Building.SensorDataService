@@ -18,7 +18,7 @@ Features
 * http://[addr]:8098/ts/v1/query –data “»Query«” POST ( query )
 * http://[addr]:8098/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time} DELETE ( delete )
 * http://[addr]:8098/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time} GET ( get one )
-*
+* http://[addr]:8098/ts/v1/tables/SensorData/list_keys GET ( list_keys )
 
 
 ## Reducing algorithm
@@ -141,4 +141,16 @@ Response
   "time": 1506340107,
   "value": "Lorem"
 }
+```
+
+## Get all keys
+
+$ curl -XGET http://localhost:7777/ts/v1/tables/SensorData/list_keys
+```
+Response
+```
+http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/vehicula/type/mi/time/1505296853/value/sed
+http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/foo/type/bar/time/1505296973/value/Lorem
+http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/Weather%20Station%200001/type/abc-xxx-001-001/time/2017091410/value/14.5
+http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/Aliquam/type/sit/time/1505296913/value/amet
 ```

@@ -99,13 +99,23 @@ public class DataReduceController {
         map.put("type", type);
         map.put("time", time);
 
-        ResponseEntity<SensorEntityGet> sensorData =
+        ResponseEntity<SensorEntityGet> response =
                 restTemplate.getForEntity(restCallUtil.get(), SensorEntityGet.class, map);
-        return sensorData;
+        handleExceptions(restCallUtil.get(), response);
+
+        return response;
     }
 
-    public ResponseEntity listKeys() {
-        throw new UnsupportedOperationException();
+    @RequestMapping(
+            value = "/ts/v1/tables/{table}/list_keys",
+            method = GET)
+    public @ResponseBody ResponseEntity<String> listKeys(@PathVariable String table) {
+
+        ResponseEntity<String> response =
+                restTemplate.getForEntity(restCallUtil.keys(), String.class);
+        handleExceptions(restCallUtil.keys(), response);
+
+        return response;
     }
 
     public ResponseEntity put() {
@@ -145,11 +155,7 @@ public class DataReduceController {
         ResponseEntity<String> response =
                 restTemplate.exchange(queryRestCall, HttpMethod.POST, request, String.class);
 
-        if (!response.getStatusCode().equals(HttpStatus.OK)) {
-            // nok
-            log.error(String.format("Rest call end with HttpStatus = %d", response.getStatusCode()));
-            return new ResponseEntity("error", response.getStatusCode());
-        }
+       handleExceptions(queryRestCall, response);
 
         ObjectMapper m = new ObjectMapper();
         SensorDataContainer result = null;
@@ -163,7 +169,12 @@ public class DataReduceController {
 
 
 
-
-
-
+    //TODO test
+    private void handleExceptions(String restCall, ResponseEntity<?> response) {
+        if (!response.getStatusCode().equals(HttpStatus.OK)) {
+            // nok
+            log.error(String.format("Rest call %s end with HttpStatus = %d", response.getStatusCode(), restCall));
+            response = new ResponseEntity("error", response.getStatusCode());
+        }
+    }
 }

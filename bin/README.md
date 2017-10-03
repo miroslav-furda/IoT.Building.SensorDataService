@@ -60,8 +60,7 @@ $ docker-compose scale member=4
 
 * http://[addr]:8098/ts/v1/tables/SensorData/keys ‘[»Row(s)«]’ POST ( put )
 
-* http://[addr]:8098/ts/v1/tables/SensorData/list_keys GET ( list_keys )
-* http://[addr]:8098/ts/v1/tables/SensorData/keys/deviceId/bar/time/1506339989/type/mi GET ( get )
+
 
 
 

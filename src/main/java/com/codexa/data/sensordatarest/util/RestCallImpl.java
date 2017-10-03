@@ -74,6 +74,17 @@ public class RestCallImpl implements RestCall {
 
     @Override
     public String keys() {
-        return null;
+        String query =
+                new StringBuilder()
+                        .append(dataEndpoint)
+                        .append("/ts/")
+                        .append(restVersion)
+                        .append("/tables/")
+                        .append(TABLE)
+                        .append("/list_keys")
+                        .toString();
+
+        log.info(query);
+        return query;
     }
 }
