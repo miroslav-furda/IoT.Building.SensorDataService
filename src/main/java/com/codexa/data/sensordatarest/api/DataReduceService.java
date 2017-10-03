@@ -1,6 +1,6 @@
 package com.codexa.data.sensordatarest.api;
 
-import com.codexa.data.sensordatarest.obj.SensorEntity;
+import com.codexa.data.sensordatarest.obj.SensorEntityQuery;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface DataReduceService {
      * @param dataToReduce
      * @return
      */
-    List<SensorEntity> reduce(List<SensorEntity> dataToReduce);
+    List<SensorEntityQuery> reduce(List<SensorEntityQuery> dataToReduce);
 
     /**
      * Get window size. Its important for data reducer calculations.

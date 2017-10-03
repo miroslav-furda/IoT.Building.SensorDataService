@@ -12,5 +12,5 @@ import java.util.List;
 public class SensorDataContainer {
 
     private List<String> columns;
-    private List<SensorEntity> rows;
+    private List<SensorEntityQuery> rows;
 }

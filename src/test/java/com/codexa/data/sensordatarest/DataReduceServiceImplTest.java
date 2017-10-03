@@ -2,7 +2,7 @@ package com.codexa.data.sensordatarest;
 
 import com.codexa.data.sensordatarest.api.DataReduceService;
 
-import com.codexa.data.sensordatarest.obj.SensorEntity;
+import com.codexa.data.sensordatarest.obj.SensorEntityQuery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class DataReduceServiceImplTest {
 
         assertNotNull(dataReduceService);
 
-        List<SensorEntity> reduced = dataReduceService.reduce(noData());
+        List<SensorEntityQuery> reduced = dataReduceService.reduce(noData());
         assertTrue(reduced.isEmpty());
 
         reduced = dataReduceService.reduce(data_100());
@@ -48,22 +48,22 @@ public class DataReduceServiceImplTest {
 
 
 
-    private List<SensorEntity> noData() {
+    private List<SensorEntityQuery> noData() {
         return new ArrayList<>();
     }
 
 
-    private List<SensorEntity> data_100() {
+    private List<SensorEntityQuery> data_100() {
         return data(100);
     }
 
-    private List<SensorEntity> data_500() {
+    private List<SensorEntityQuery> data_500() {
        return data(500);
     }
 
-    private List<SensorEntity> data(int size) {
+    private List<SensorEntityQuery> data(int size) {
 
-        List<SensorEntity> result = new ArrayList<>();
+        List<SensorEntityQuery> result = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             result.add(getSensorEntity());
         }
@@ -71,9 +71,9 @@ public class DataReduceServiceImplTest {
     }
 
 
-    private SensorEntity getSensorEntity() {
+    private SensorEntityQuery getSensorEntity() {
 
-        SensorEntity sensorEntity = new SensorEntity();
+        SensorEntityQuery sensorEntity = new SensorEntityQuery();
         sensorEntity.setDeviceId("deviceId-2");
         sensorEntity.setTime(new Timestamp(System.currentTimeMillis()));
         sensorEntity.setType("type-2");

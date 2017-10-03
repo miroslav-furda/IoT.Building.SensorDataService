@@ -1,7 +1,7 @@
 package com.codexa.data.sensordatarest;
 
 import com.codexa.data.sensordatarest.api.DataReduceService;
-import com.codexa.data.sensordatarest.obj.SensorEntity;
+import com.codexa.data.sensordatarest.obj.SensorEntityQuery;
 import lombok.Data;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ public class DataReduceServiceImpl implements DataReduceService {
 
 
     @Override
-    public List<SensorEntity> reduce(List<SensorEntity> dataToReduce) {
+    public List<SensorEntityQuery> reduce(List<SensorEntityQuery> dataToReduce) {
 
         if (dataToReduce.isEmpty()) {
             log.info("No reducing needed.");
@@ -36,7 +36,7 @@ public class DataReduceServiceImpl implements DataReduceService {
         log.info(String.format("send each is = %d", sendEach));
 
 
-        List<SensorEntity> listToSend = new ArrayList();
+        List<SensorEntityQuery> listToSend = new ArrayList();
         for (int i = 0; i < dataToReduce.size(); i = i + sendEach) {
             listToSend.add(dataToReduce.get(i));
         }

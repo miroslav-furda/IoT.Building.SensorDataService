@@ -10,20 +10,24 @@ import java.util.List;
 
 /**
  * Created by peterszatmary on 27/09/2017.
- * Model object for sensor data.
+ * Model object for sensor data. For query with many data.
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SensorEntity {
+public class SensorEntityQuery {
 
     private String deviceId;
     private String type;
     private Timestamp time;
     private String value;
 
+    /**
+     * This is hre because of unnatural format of json returned from RIAK TS with [ [], [], [] ] instead fo array of objects (rows)
+     * @param valuesList
+     */
     @JsonCreator
-    public SensorEntity(final List<Object> valuesList) {
+    public SensorEntityQuery(final List<Object> valuesList) {
 
         deviceId = (String) valuesList.get(0);
         type = (String) valuesList.get(1);

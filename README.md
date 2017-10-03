@@ -16,8 +16,8 @@ Features
 ## Consumed endpoints
 
 * http://[addr]:8098/ts/v1/query –data “»Query«” POST ( query )
-* http://[addr]:8098/ts/v1/tables/{table}/keys/deviceId/{deviceId}/time/{time}/type/{type} DELETE ( delete )
-*
+* http://[addr]:8098/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time} DELETE ( delete )
+* http://[addr]:8098/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time} GET ( get one )
 *
 
 
@@ -28,6 +28,7 @@ Features
 * how much records -> [ reducing ] -> constant graph point size
 
 ## Data
+
 
 * Service return data description as "columns" and data as "rows".
 * Each row is Object.
@@ -125,4 +126,19 @@ Response
 {"success":true}
 
 
-TODO
+## Get one object
+
+```
+curl -XGET http://localhost:7777/ts/v1/tables/SensorData/keys/deviceId/foo/type/bar/time/1506340107
+```
+
+Response
+
+```
+{
+  "deviceId": "foo",
+  "type": "bar",
+  "time": 1506340107,
+  "value": "Lorem"
+}
+```

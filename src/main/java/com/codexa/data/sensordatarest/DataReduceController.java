@@ -3,7 +3,8 @@ package com.codexa.data.sensordatarest;
 import com.codexa.data.sensordatarest.api.DataReduceService;
 import com.codexa.data.sensordatarest.api.RestCall;
 import com.codexa.data.sensordatarest.obj.SensorDataContainer;
-import com.codexa.data.sensordatarest.obj.SensorEntity;
+import com.codexa.data.sensordatarest.obj.SensorEntityGet;
+import com.codexa.data.sensordatarest.obj.SensorEntityQuery;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -46,10 +48,10 @@ public class DataReduceController {
     @RequestMapping(value = "/ts/v1/query", method = POST)
     public @ResponseBody ResponseEntity<SensorDataContainer> reduceQueryCall(@RequestBody String selectQuery) {
 
-        ResponseEntity<SensorDataContainer> sensorData = makeCall(selectQuery);
+        ResponseEntity<SensorDataContainer> sensorData = makeQueryCall(selectQuery);
 
         SensorDataContainer responseBody = sensorData.getBody();
-        List<SensorEntity> reducedSensorData = dataReduceService.reduce(responseBody.getRows());
+        List<SensorEntityQuery> reducedSensorData = dataReduceService.reduce(responseBody.getRows());
         responseBody.setRows(reducedSensorData);
 
         return sensorData;
@@ -83,9 +85,23 @@ public class DataReduceController {
 
     }
 
+    @RequestMapping(
+            value = "/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time}",
+            method = GET)
+    public @ResponseBody ResponseEntity<SensorEntityGet> get(
+            @PathVariable String table,
+            @PathVariable String deviceId,
+            @PathVariable String type,
+            @PathVariable String time) {
 
-    public ResponseEntity get() {
-        throw new UnsupportedOperationException(); //TODO
+        Map<String, Object> map = new HashMap<>();
+        map.put("deviceId", deviceId);
+        map.put("type", type);
+        map.put("time", time);
+
+        ResponseEntity<SensorEntityGet> sensorData =
+                restTemplate.getForEntity(restCallUtil.get(), SensorEntityGet.class, map);
+        return sensorData;
     }
 
     public ResponseEntity listKeys() {
@@ -116,12 +132,12 @@ public class DataReduceController {
 
 
 
-    private ResponseEntity<SensorDataContainer> makeCall(String query) {
+    private ResponseEntity<SensorDataContainer> makeQueryCall(String sqlQuery) {
 
-        String decodedQuery = decodeQuery(query);
+        String decodedQuery = decodeQuery(sqlQuery);
         String queryRestCall = restCallUtil.query();
 
-        log.info("Raw query = " + query);
+        log.info("Raw sql query = " + sqlQuery);
         log.info("Decoded select query = " + decodedQuery);
         log.info("RestCallImpl rest call = " + queryRestCall);
 
@@ -144,4 +160,10 @@ public class DataReduceController {
         }
         return new ResponseEntity<>(result, response.getStatusCode());
     }
+
+
+
+
+
+
 }
