@@ -52,16 +52,6 @@ $ docker-compose scale member=4
 * install RIAK TS on server in Kubernetes
 * algorithm to reduce data on server side for fast rendering on client side
 
-
-## How to work with this rest API
-
-
-## Endpoints
-
-* http://[addr]:8098/ts/v1/tables/SensorData/keys ‘[»Row(s)«]’ POST ( put )
-
-
-
 ### insert one or more records
 
 * see put https://www.tiot.jp/riak-docs/riak/ts/1.3.0/developing/http/

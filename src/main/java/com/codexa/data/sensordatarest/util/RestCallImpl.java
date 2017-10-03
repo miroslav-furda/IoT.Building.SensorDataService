@@ -17,8 +17,11 @@ public class RestCallImpl implements RestCall {
     @Value("${rest.version}")
     private String restVersion;
 
-    private static final String TABLE = "ExampleTable";//"SensorData";
+    private String tableName;
 
+    public RestCallImpl(String tableName) {
+        this.tableName = tableName;
+    }
 
     @Override
     public String query() {
@@ -43,7 +46,7 @@ public class RestCallImpl implements RestCall {
                 .append("/ts/")
                 .append(restVersion)
                 .append("/tables/")
-                .append(TABLE)
+                .append(tableName)
                 .append("/keys/deviceId/{deviceId}/type/{type}/time/{time}")
                 .toString();
 
@@ -53,7 +56,18 @@ public class RestCallImpl implements RestCall {
 
     @Override
     public String put() {
-        return null;
+        String query =
+                new StringBuilder()
+                        .append(dataEndpoint)
+                        .append("/ts/")
+                        .append(restVersion)
+                        .append("/tables/")
+                        .append(tableName)
+                        .append("/keys")
+                        .toString();
+
+        log.info(query);
+        return query;
     }
 
     @Override
@@ -64,7 +78,7 @@ public class RestCallImpl implements RestCall {
                         .append("/ts/")
                         .append(restVersion)
                         .append("/tables/")
-                        .append(TABLE)
+                        .append(tableName)
                         .append("/keys/deviceId/{deviceId}/type/{type}/time/{time}")
                         .toString();
 
@@ -80,7 +94,7 @@ public class RestCallImpl implements RestCall {
                         .append("/ts/")
                         .append(restVersion)
                         .append("/tables/")
-                        .append(TABLE)
+                        .append(tableName)
                         .append("/list_keys")
                         .toString();
 

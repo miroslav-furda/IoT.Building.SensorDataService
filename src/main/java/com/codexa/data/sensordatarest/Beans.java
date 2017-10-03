@@ -3,6 +3,7 @@ package com.codexa.data.sensordatarest;
 import com.codexa.data.sensordatarest.api.DataReduceService;
 import com.codexa.data.sensordatarest.api.RestCall;
 import com.codexa.data.sensordatarest.util.RestCallImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +25,7 @@ public class Beans {
     }
 
     @Bean
-    public RestCall queryUtil() {
-        return new RestCallImpl();
+    public RestCall restCall(@Value("${table.name}") String tableName) {
+        return new RestCallImpl(tableName);
     }
 }

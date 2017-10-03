@@ -2,23 +2,28 @@
 
 Features
 
-- delegating rest calls to RIAK TS REST API on 8098 default port
-- for query data reducing algorithm is used on top of RIAK TS REST API call
+* delegating rest calls to RIAK TS REST API on 8098 default port
+* for query data reducing algorithm is used on top of RIAK TS REST API call
+* this service is listening on port 7777, RIAK TS on port 8098
+* delegated ( list_keys, get, put, delete )
+* not just delegated also reduced ( query )
+
 
 
 ## Technologies
 
 * Spring Boot
 * Docker compose
-* RIAK TS
+* RIAK TS (see documentation for more information [here](https://bitbucket.org/iotresearchlab/darwin-sensor-data-rest/src/0ad28277d2d6b96ee5971f3d09096c4132c4a3a9/bin/README.md?at=master&fileviewer=file-view-default))
 
 
 ## Consumed endpoints
 
-* http://[addr]:8098/ts/v1/query –data “»Query«” POST ( query )
-* http://[addr]:8098/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time} DELETE ( delete )
-* http://[addr]:8098/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time} GET ( get one )
-* http://[addr]:8098/ts/v1/tables/SensorData/list_keys GET ( list_keys )
+* http://[addr]:7777/ts/v1/query –data “»Query«” POST ( query )
+* http://[addr]:7777/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time} DELETE ( delete )
+* http://[addr]:7777/ts/v1/tables/{table}/keys/deviceId/{deviceId}/type/{type}/time/{time} GET ( get one )
+* http://[addr]:7777/ts/v1/tables/SensorData/list_keys GET ( list_keys )
+* http://[addr]:7777/ts/v1/tables/SensorData/keys ‘[»Row(s)«]’ POST ( put )
 
 
 ## Reducing algorithm
@@ -169,3 +174,22 @@ http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/foo/type/bar/time/1
 http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/Weather%20Station%200001/type/abc-xxx-001-001/time/2017091410/value/14.5
 http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/Aliquam/type/sit/time/1505296913/value/amet
 ```
+
+
+## Put one or more data
+
+TODO img
+
+
+
+
+Response
+
+```
+{"success":true}
+```
+
+Some rules
+
+* Be aware if you try to store same data , you got from server also success message, but nothing will be stored.
+* Same data means that the data has same local key. In this case local key = ( deviceId, type, time ).
