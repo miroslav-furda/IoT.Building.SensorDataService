@@ -146,7 +146,7 @@ curl -XGET http://localhost:7777/ts/v1/tables/SensorData/keys/deviceId/foo/type/
 
 Response
 
-```
+```json
 {
   "deviceId": "foo",
   "type": "bar",
@@ -157,9 +157,12 @@ Response
 
 ## Get all keys
 
+```
 $ curl -XGET http://localhost:7777/ts/v1/tables/SensorData/list_keys
 ```
+
 Response
+
 ```
 http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/vehicula/type/mi/time/1505296853/value/sed
 http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/foo/type/bar/time/1505296973/value/Lorem
