@@ -115,6 +115,13 @@ Response
 }
 ```
 
+Some rules
+
+* time have to go last
+* time have to has since - from boundaries
+* where clause have to has all atributes already present in partition key (time,deviceId)
+
+
 ## Delete one row
 
 ```
@@ -125,6 +132,11 @@ Response
 
 {"success":true}
 
+Some rules
+
+
+* for deleting you need at least 3 atributes / columns. (maybe it is local key part of primary key)
+* question is how much columns for deleting we need with 2 columns at all in table ? :D TODO test it
 
 ## Get one object
 

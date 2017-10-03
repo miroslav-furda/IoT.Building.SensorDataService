@@ -62,55 +62,6 @@ $ docker-compose scale member=4
 
 
 
-
-
-
-
-### Get all keys from table Sensordata. Expensive REST call. Be aware :)
-```
-$ curl -XGET http://127.0.0.1:8098/ts/v1/tables/SenzorData/list_keys
-```
-Response
-```
-http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/bar/time/1506339989/type/mi
-http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/foo/time/1506340107/type/bar
-http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/foo/time/1506340047/type/sit
-http://172.19.0.2:8098/ts/v1/tables/SensorData/keys/deviceId/foo/time/1506339988/type/mi
-```
-
-### Get all data by specific query
-```
-curl -XPOST http://127.0.0.1:8098/ts/v1/query --data "SELECT * from SensorData WHERE deviceId = 'foo' AND time > 1506253923 AND time < 1506426723"
-```
-Response
-```
-{"columns":["deviceId","type","value","time"],"rows":[["foo","mi","sed",1506339988],["foo","sit","amet",1506340047],["foo","bar","Lorem",1506340107]]}
-```
-Some rules
-
-* time have to go last
-* time have to has since - from boundaries
-* where clause have to has all atributes already present in partition key (time,deviceId)
-
-### Delete one record
-
-```
-curl -XDELETE http://127.0.0.1:8098/ts/v1/tables/SensorData/keys/deviceId/foo/type/mi/time/1506339988
-```
-Response
-```
-{"success":true}
-```
-Some rules
-
-* for deleting you need at least 3 atributes / columns. (maybe it is local key part of primary key)
-* question is how much columns for deleting we need with 2 columns at all in table ? :D TODO test it
-
-
-### Get one record
-
-* see get https://www.tiot.jp/riak-docs/riak/ts/1.3.0/developing/http/
-
 ### insert one or more records
 
 * see put https://www.tiot.jp/riak-docs/riak/ts/1.3.0/developing/http/
