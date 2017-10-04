@@ -33,7 +33,6 @@ public class RestCallImpl implements RestCall {
                         .append(restVersion)
                         .append("/query")
                         .toString();
-        log.info(query);
         return query;
     }
 
@@ -50,7 +49,7 @@ public class RestCallImpl implements RestCall {
                 .append("/keys/deviceId/{deviceId}/type/{type}/time/{time}")
                 .toString();
 
-        log.info(query);
+        log.info(String.format("delete call = %s", query));
         return query;
     }
 
@@ -66,7 +65,7 @@ public class RestCallImpl implements RestCall {
                         .append("/keys")
                         .toString();
 
-        log.info(query);
+        log.info(String.format("put call = %s", query));
         return query;
     }
 
@@ -82,7 +81,7 @@ public class RestCallImpl implements RestCall {
                         .append("/keys/deviceId/{deviceId}/type/{type}/time/{time}")
                         .toString();
 
-        log.info(query);
+        log.info(String.format("get call = %s", query));
         return query;
     }
 
@@ -98,7 +97,7 @@ public class RestCallImpl implements RestCall {
                         .append("/list_keys")
                         .toString();
 
-        log.info(query);
+        log.info(String.format("keys call = %s", query));
         return query;
     }
 }

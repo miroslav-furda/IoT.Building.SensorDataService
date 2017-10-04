@@ -5,7 +5,6 @@ import com.codexa.data.sensordatarest.api.RestCall;
 import com.codexa.data.sensordatarest.obj.SensorDataContainer;
 import com.codexa.data.sensordatarest.obj.SensorEntityGet;
 import com.codexa.data.sensordatarest.obj.SensorEntityQuery;
-import com.codexa.data.sensordatarest.util.RestCallImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,9 +72,13 @@ public class DataReduceController {
         map.put("type", type);
         map.put("time", time);
 
+
+        String call = restCallImpl.delete();
+
         try {
-            restTemplate.delete(restCallImpl.delete(), map); //rest client exc,
+            restTemplate.delete(call, map); //rest client exc,
             result = new ResponseEntity<>("{\"success\":true}", HttpStatus.OK);
+            log.info(String.format("delete call = %s", call));
         } catch (RuntimeException ex) {
             result = new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_MODIFIED);
         }
@@ -96,9 +99,13 @@ public class DataReduceController {
         map.put("type", type);
         map.put("time", time);
 
+        String call = restCallImpl.get();
+
         ResponseEntity<SensorEntityGet> response =
-                restTemplate.getForEntity(restCallImpl.get(), SensorEntityGet.class, map);
-        handleExceptions(restCallImpl.get(), response);
+                restTemplate.getForEntity(call, SensorEntityGet.class, map);
+
+        log.info(String.format("get call = %s", call));
+        handleExceptions(call, response);
 
         return response;
     }
@@ -108,9 +115,13 @@ public class DataReduceController {
             method = GET)
     public @ResponseBody ResponseEntity<String> listKeys() {
 
+        String call = restCallImpl.keys();
+
         ResponseEntity<String> response =
-                restTemplate.getForEntity(restCallImpl.keys(), String.class);
-        handleExceptions(restCallImpl.keys(), response);
+                restTemplate.getForEntity(call, String.class);
+
+        log.info(String.format("keys call = %s", call));
+        handleExceptions(call, response);
 
         return response;
     }
@@ -123,9 +134,12 @@ public class DataReduceController {
 
         ResponseEntity<String> result;
 
+        String call = restCallImpl.put();
+
         try {
-            makeQueryCall(jsonObjects, restCallImpl.put());
+            makeQueryCall(jsonObjects, call);
             result = new ResponseEntity<>("{\"success\":true}", HttpStatus.OK);
+            log.info(String.format("put call = %s", call));
         } catch (RuntimeException ex) {
             result = new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_MODIFIED);
         }

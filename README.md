@@ -71,10 +71,26 @@ Features
 
 ## Configurations
 
-* See application.properties file.
-* windows size
-* microservices runtime port
-* data endpoint url from where the data are consumed
+```properties
+# service endpoint that this service consumes
+data.endpoint=http://localhost:8098
+
+# how much data points should be set as maximum to client that render them
+window.size=100
+
+# port where tomcat starts and also this service
+server.port=7777
+
+# this is rest version of RIAK TS REST API (not the version of this service)
+rest.version=v1
+
+# logging level
+logging.level.root=INFO
+
+# which table is consumed
+table.name=SensorData
+```
+
 
 
 ## How to run microservice
