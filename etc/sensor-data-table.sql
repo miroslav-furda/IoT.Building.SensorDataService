@@ -6,7 +6,7 @@
 --   - Local key – defines where data is written in the partition on that given node.
 
 
-CREATE TABLE ExampleTable
+CREATE TABLE SensorData
 (
   deviceId       varchar   not null,
   type           varchar   not null,
