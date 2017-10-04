@@ -48,8 +48,6 @@ public class RestCallImpl implements RestCall {
                 .append(tableName)
                 .append("/keys/deviceId/{deviceId}/type/{type}/time/{time}")
                 .toString();
-
-        log.info(String.format("delete call = %s", query));
         return query;
     }
 
@@ -64,8 +62,6 @@ public class RestCallImpl implements RestCall {
                         .append(tableName)
                         .append("/keys")
                         .toString();
-
-        log.info(String.format("put call = %s", query));
         return query;
     }
 
@@ -80,8 +76,6 @@ public class RestCallImpl implements RestCall {
                         .append(tableName)
                         .append("/keys/deviceId/{deviceId}/type/{type}/time/{time}")
                         .toString();
-
-        log.info(String.format("get call = %s", query));
         return query;
     }
 
@@ -96,8 +90,6 @@ public class RestCallImpl implements RestCall {
                         .append(tableName)
                         .append("/list_keys")
                         .toString();
-
-        log.info(String.format("keys call = %s", query));
         return query;
     }
 }
