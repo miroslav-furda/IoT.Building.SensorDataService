@@ -47,9 +47,6 @@ public class DataReduceServiceImpl implements DataReduceService {
 
 
     private Long calculateSendEach(Long dataCount) {
-        if (dataCount <= 0) {
-            return 1L;
-        }
-        return (windowSize >= dataCount) ? 1L : dataCount / windowSize;
+        return (windowSize >= dataCount || dataCount <= 0) ? 1L : dataCount / windowSize;
     }
 }
