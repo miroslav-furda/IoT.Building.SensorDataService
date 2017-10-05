@@ -66,15 +66,18 @@ $ docker-compose scale member=4
 
 ## More informations and wiki
 
+* [RIAK TOKIO DOCS : very useful](https://www.tiot.jp/riak-docs/riak/ts/1.3.0/developing/http/)
 * [Data modeling](https://github.com/cvitter/Riak-TS-Data-Modeling/blob/master/How%20Partition%20Keys%20Work.md)
 * [How to select right partition key](https://github.com/cvitter/Riak-TS-Data-Modeling/blob/master/Selecting%20A%20Partition%20Key.md)
 * [Official site](http://basho.com/products/riak-ts/)
+* [Comparison time series db](https://blog.outlyer.com/top10-open-source-time-series-databases)
+* [Cluster management API : didnt used until now](https://basho-labs.github.io/riak_explorer/docs/api.html)
 
 
 ### Other useful projects
 
-* https://github.com/basho-labs
-* https://github.com/basho-labs/riak_explorer
+* [https://github.com/basho-labs](https://github.com/basho-labs)
+* [https://github.com/basho-labs/riak_explorer](https://github.com/basho-labs/riak_explorer)
 
 
 ### Alternatives

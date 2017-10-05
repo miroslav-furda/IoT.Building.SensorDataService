@@ -28,8 +28,11 @@ Features
 
 ## Reducing algorithm
 
-* ued for endpoint http://[addr]:8098/ts/v1/query –data “»Query«” POST ( query )
-* inputs : from time , to time, constant graph point size
+* used for endpoint http://[addr]:8098/ts/v1/query –data “»Query«” POST ( query )
+* inputs
+* * from time
+* * to time
+* * constant graph point size
 * how much records -> [ reducing ] -> constant graph point size
 
 ## Data
@@ -138,9 +141,9 @@ Response
 
 Some rules
 
-* time have to go last
-* time have to has since - from boundaries
-* where clause have to has all atributes already present in partition key (time,deviceId)
+* time must be last in call
+* time must has since - from boundaries
+* where clause must has all atributes already present in partition key (time, deviceId)
 
 
 ## Delete one row
