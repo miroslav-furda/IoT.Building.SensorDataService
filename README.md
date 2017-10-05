@@ -14,7 +14,7 @@ Features
 
 * Spring Boot
 * Docker compose
-* RIAK TS (see documentation for more information [here](https://bitbucket.org/iotresearchlab/darwin-sensor-data-rest/src/0ad28277d2d6b96ee5971f3d09096c4132c4a3a9/bin/README.md?at=master&fileviewer=file-view-default))
+* RIAK TS (see documentation for more information [here](https://bitbucket.org/iotresearchlab/darwin-sensor-data-rest/src/1671bb2452bbcda6a1a7c3f6881cba7fecef0c72/etc/README.md))
 
 
 ## Consumed endpoints
