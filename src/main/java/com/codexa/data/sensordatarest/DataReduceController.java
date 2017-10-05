@@ -105,7 +105,7 @@ public class DataReduceController {
                 restTemplate.getForEntity(call, SensorEntityGet.class, map);
 
         log.info(String.format("get call = %s", call));
-        handleExceptions(call, response);
+        handleNoOK(call, response);
 
         return response;
     }
@@ -121,7 +121,7 @@ public class DataReduceController {
                 restTemplate.getForEntity(call, String.class);
 
         log.info(String.format("keys call = %s", call));
-        handleExceptions(call, response);
+        handleNoOK(call, response);
 
         return response;
     }
@@ -179,7 +179,7 @@ public class DataReduceController {
         ResponseEntity<String> response =
                 restTemplate.exchange(restCall, HttpMethod.POST, request, String.class);
 
-       handleExceptions(restCall, response);
+       handleNoOK(restCall, response);
 
         ObjectMapper m = new ObjectMapper();
         SensorDataContainer result = null;
@@ -194,11 +194,13 @@ public class DataReduceController {
 
 
     //TODO test
-    private void handleExceptions(String restCall, ResponseEntity<?> response) {
+    private void handleNoOK(String restCall, ResponseEntity<?> response) {
         if (!response.getStatusCode().equals(HttpStatus.OK)) {
             // nok
             log.error(String.format("Rest call %s end with HttpStatus = %d", response.getStatusCode(), restCall));
-            response = new ResponseEntity("error", response.getStatusCode());
+            response = new ResponseEntity(
+                    String.format("error status with = %s", response.getStatusCode()), response.getStatusCode()
+            );
         }
     }
 }
