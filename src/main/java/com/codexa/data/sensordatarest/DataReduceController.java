@@ -31,6 +31,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @Log4j
 @RestController
+@CrossOrigin
 public class DataReduceController {
 
     @Autowired
